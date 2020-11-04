@@ -16,10 +16,10 @@ export default function Laws() {
     const [page, setPage] = useState(1);
     const pageSize=9;
     
-    
     useEffect(() => {
     let paginatedLaws=[];
-    paginatedLaws = laws.slice((page - 1)* pageSize, page * pageSize)
+    const bias=page-1;
+    paginatedLaws=laws.slice(bias * pageSize, page * pageSize);
     setLawsPerPage(paginatedLaws);
     }, [page,laws])
 
@@ -62,6 +62,8 @@ export default function Laws() {
             size={lawSize}
             pageSize={pageSize}
             setPage={setPage}
+            laws={laws}
+            page={page}
             />
         </div>
     )
