@@ -1,0 +1,34 @@
+@import '../../../scss/index.scss';
+
+.menu-leyes{
+
+    
+    position: sticky;
+    top:0;
+    background-color: $content-color;
+    border: 0;
+    display: flex;
+    align-items: center;
+    padding: 20px 30px 20px 110px;
+
+    li{
+        border: 1px solid $font-dark;
+        border-radius: 8px;
+
+        span{
+            font-size: 18px;
+            color: $font-light;
+            padding: 15px;
+            font-weight: bold;
+            border-radius: 8px;
+            
+            &:hover{
+                background-color: $gray-color-light;
+                
+            }
+            &:active{
+                background-color: $gray-color-light;
+            }
+        }
+    }
+    }

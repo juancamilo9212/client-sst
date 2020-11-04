@@ -1,0 +1,37 @@
+@import '../../../scss/index.scss';
+
+.menu-sider{
+
+    position: fixed;
+    left: 0;
+    top: 100px;
+    overflow: auto;
+    border:0;
+    
+    .ant-menu{
+
+        background-color:#000;
+
+        li{
+            height: 100px;
+            padding-top:25px;
+            padding-left: 20px;
+            background-color:#000;
+
+            &:link{
+                background-color: $font-dark;
+            }
+
+            a{
+    
+                svg{ 
+                    height:50px;
+                    width: 50px;
+                    color: $primary-color;
+
+                    
+                }
+            }
+        }
+    }
+}

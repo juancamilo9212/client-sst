@@ -1,0 +1,37 @@
+@import '../../../scss/index.scss';
+
+.sign-in{
+    background-image: url(../../../assets/img/jpg/black-background.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    
+    &__content{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+
+        &-logo{
+            padding: 70px 20px 0px 20px;
+            img{
+                border: 2px solid $primary-color;
+            }
+        }
+
+        &-tabs{
+            width: 440px;
+            background-color: $background-color-light;
+
+            .ant-tabs-tab-btn{
+                width: 184px;
+                text-align: center;
+                font-size: 18px;
+                color: $font-dark;
+                &:hover{
+                    color: $primary-color-blue;
+                }
+            }
+            }
+        }
+    }

@@ -1,0 +1,40 @@
+@import '../scss/index.scss';
+
+.layout-basic{
+
+    &__header{
+        position: fixed;
+        top:0;
+        left: 0;
+        width: 100%;
+        display: flex;
+        padding: 0;
+        height: 100px;
+        background-color: $header-color;
+        //border: 5px solid red;
+    }
+
+    &__content{
+
+
+        &-menu{
+            
+            background-color: $menu-color;
+            margin-top: 100px;
+        }
+    
+        &-content{
+            //border:5px solid purple;
+            min-height: calc(100vh - 120px);
+            background: $content-color;
+            padding: 120px 25px 25px 25px;
+        }
+    }
+
+   
+    &__footer{
+        //border:5px solid orange;
+        padding: 20px;
+        margin: 0;
+    }
+}

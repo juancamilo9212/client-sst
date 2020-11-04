@@ -1,0 +1,117 @@
+@import '../../../scss/index.scss';
+
+.law-list{
+
+    height: 50vh;
+    overflow-y: auto;
+
+    &__modal{
+
+        
+            .ant-modal-header{
+                background-color: $primary-color-blue;
+                border:2px solid $font-light;
+    
+                .ant-modal-title{
+                text-align: center;
+                font-size: 22px;
+                font-weight: bold;
+                }
+            }
+    
+            .ant-modal-body{
+                height:400px;
+                overflow: auto;
+                font-size: 16px;
+                background-color: $content-color;
+                color: $font-light;
+                border:2px solid $font-light;
+                border-top: none;
+                justify-items: right;
+            }
+    }
+
+    &__cards{
+
+         top: 10px;
+         bottom:30px;
+
+        .ant-card{
+                margin-top: 40px;
+                width: 95%;
+                height: 300px;
+                border:3px solid $primary-color;
+                border-radius: 10px;
+                background-color: $menu-color;
+
+                .ant-card-head-title{
+                    color: $font-light;
+                    font-size: 16px;
+                    font-weight: bold;
+                }
+
+                .ant-card-extra{
+
+                    button{
+                        
+                        top:10px;
+                        background-color: $font-dark;
+                        border: 0;
+
+                        svg{
+                            width: 30px;
+                            height: 30px;
+                            color: $font-light;
+
+                            &:hover{
+                                color:$primary-color;
+                            }
+                        }
+
+                        
+                    }
+                }
+
+                .ant-card-meta{
+
+                    
+                    .ant-card-meta-description{
+                        background-color: $gray-color-light;
+                        padding: 10px;
+                        overflow-y: auto;
+                        height: 150px;
+                        margin-top: 1px;
+                        padding-top: 0px 10px 10px 0px;
+                        color: $font-dark;
+                        font-weight: bold;
+                        font-size: 14px;
+                        border-radius: 10px;
+                    }
+    
+                }
+
+                .button-descargar{
+                    margin-top: 10px;
+                    width: 100%;
+                    background-color: $primary-color-blue;
+                    border-radius: 10px;
+                    
+                    a{
+                        color: $font-dark;
+                        font-size: 16px;
+
+                        svg{
+                            width: 20px;
+                            height: 20px;
+                        }
+                    }
+
+                    &:hover{
+                        background-color: $primary-color-blue-hover;
+                        color: $font-dark;
+                        font-weight: bold;
+                    }
+                }
+                }
+    }
+}

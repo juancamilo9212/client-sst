@@ -1,0 +1,11 @@
+@import './scss/index.scss';
+
+.success{
+border: 1px solid $success;
+background-color: $background-color-success;
+}
+
+.error{
+    border: 1px solid $error;
+    background-color: $background-color-error;
+}

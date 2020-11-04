@@ -1,0 +1,38 @@
+@import '../../../scss/index.scss';
+
+.session-header{
+    
+    display:flex;
+
+    &__left{
+
+        position: absolute;
+        
+        img{
+            padding: 0 10px;
+            width: 200px;
+            height: 80px;
+        }
+    }
+
+    &__right{
+
+        position: absolute;
+        right: 20px;
+        top: 15px;
+
+        button{
+            color:$primary-color;
+            background-color: transparent;
+
+            svg{
+                width: 20px;
+                height: 20px;
+            }
+
+            &:hover{
+                color: red;
+            }
+        }
+    }
+}
