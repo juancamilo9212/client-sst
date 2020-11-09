@@ -56,6 +56,13 @@ export function logOut(){
     localStorage.removeItem(REFRESH_TOKEN);
 }
 
+export function getUserId(){
+    const token = getAccessTokenApi();
+    const info = jwtDecode(token);
+    return info.id;
+    
+}
+
 function isTokenExpired(token){
     const seconds=60;
     const metaToken=jwtDecode(token);
