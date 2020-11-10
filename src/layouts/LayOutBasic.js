@@ -7,6 +7,7 @@ import SignIn from '../pages/Session/SignIn/SignIn';
 import {getAccessTokenApi, getRefreshAccessTokenApi} from '../api/auth';
 import useAuth from '../hooks/useAuth'
 import './LayOutBasic.scss';
+import Laws from '../pages/Session/Laws';
 
 export default function LayOutBasic(props) {
 
@@ -26,7 +27,6 @@ export default function LayOutBasic(props) {
         </>
       )
     }
-    
     
       return (
       
@@ -56,13 +56,14 @@ const {routes}=props;
 
 return(
     <Switch>
-        {routes.map((route,index) => (
+        {routes.map((route,index) => ( 
         <Route
         key={index}
         path={route.path}
         exact={route.path}
         component={route.component}
         />
+        
     ))}
     </Switch> 
 )
