@@ -1,1 +1,8 @@
 @import '../../../scss/index.scss';
+
+.new-accidente-form{
+
+    &__row{
+        overflow: auto;
+    }
+}

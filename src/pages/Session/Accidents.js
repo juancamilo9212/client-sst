@@ -56,10 +56,12 @@ export default function Accidents() {
             />
             </div>
             <Modal
+            className="accident-list__modal"
             setIsVisible={setIsVisibleModal}
             isVisible={isVisibleModal}
             title={modalTitle}
-            className="accident-list__modal"
+            width={"75%"}
+            height={"75%"}
             >
             {modalContent}
             </Modal>

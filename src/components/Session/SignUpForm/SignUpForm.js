@@ -100,6 +100,7 @@ export default function SignUpForm() {
             const {name} = e.target;
             setUserData({...userData, [name]: e.target.value})
         }
+        
 
     return (
         <Form 
