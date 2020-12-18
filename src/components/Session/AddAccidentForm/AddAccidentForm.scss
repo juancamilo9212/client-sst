@@ -40,7 +40,7 @@
 
     &__submit{
         
-        margin-left: 250px;
+        margin-left: 320px;
         width: 50%;
         height: 50px;
         span{
@@ -48,5 +48,30 @@
             font-weight: bold;
             
         }
+    }
+
+    .dropzone{
+        border:2px dashed $primary-color-blue;
+        padding: 20px 20px;
+        svg{
+            width: 70px;
+            height: 70px;
+            margin-left: 250px;
+            color: $primary-color-blue;
+        }
+        p{
+            margin-left: 300px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        em{
+            margin-left: 430px;
+            font-size: 14px;
+        }
+    }
+    ul{
+        margin-top: 10px;
+        font-size: 14px;
+        color: $success;
     }
 }

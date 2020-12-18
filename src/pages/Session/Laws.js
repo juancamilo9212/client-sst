@@ -48,8 +48,8 @@ export default function Laws() {
             tip="Cargando..."
             size="large"
             style={{color:"#FFF",
-            marginLeft:"500px",
-            marginTop:"200px",
+            marginLeft:"600px",
+            marginTop:"300px",
             fontSize:"16px",
             fontWeight:"bold"
             }}

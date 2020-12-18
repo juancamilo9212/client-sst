@@ -16,7 +16,7 @@ export default function LayOutBasic(props) {
     const {user,isLoading} =useAuth();
     
     
-    if(!user && !isLoading){
+    if(!user){
       return(
         <>
         <Route 
