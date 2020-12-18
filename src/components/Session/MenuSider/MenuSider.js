@@ -1,7 +1,11 @@
 import React from 'react';
 import {Menu, Layout, Tooltip} from 'antd';
 import {Link} from 'react-router-dom';
-import {BookOutlined, BarChartOutlined} from '@ant-design/icons';
+import {
+    BookOutlined, 
+    BarChartOutlined,
+    MedicineBoxOutlined
+} from '@ant-design/icons';
 import { createGlobalStyle } from "styled-components";
 import './MenuSider.scss';
 
@@ -61,6 +65,21 @@ const TooltiplStyle = createGlobalStyle`
                 <TooltiplStyle/>
                 <Link to="/accidentes">
                 <BarChartOutlined />
+                </Link>
+                </Tooltip>
+                </Item>
+
+                <Item 
+                key="/recursos"
+                className="menu-sider__item"
+                >
+                <Tooltip 
+                title="Recursos"
+                placement="right"
+                >
+                <TooltiplStyle/>
+                <Link to="/recursos">
+                <MedicineBoxOutlined />
                 </Link>
                 </Tooltip>
                 </Item>
