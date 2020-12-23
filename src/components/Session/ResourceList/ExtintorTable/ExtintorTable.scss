@@ -1,0 +1,21 @@
+@import '../../../../scss/index.scss';
+
+.extintor-table{
+
+    margin-top: 20px;
+
+    .ant-table-thead{
+        .ant-table-cell{
+        text-align: center;
+        font-weight: bold;
+        font-size: 15px;
+        }
+        
+    }
+
+    .ant-table-tbody{
+        .ant-table-cell{
+            text-align: center;
+    }
+}
+}
