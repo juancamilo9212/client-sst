@@ -1,0 +1,45 @@
+@import '../../../../scss/index.scss';
+
+.ant-modal-title{
+    font-size: 24px;
+    font-weight: bold;
+    margin-left: 150px;
+}
+
+.inspection-modal{
+
+    height: 400px;
+    overflow: auto;
+
+    &__delete{
+        margin-left: 10px;
+        background-color:$background-color-error ;
+        svg{
+            color: rgba($color: #000000, $alpha: 0.5);
+        }
+    }
+
+    &__textArea{
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    &__submit{
+        width: 100%;
+        height: 40px;
+        font-size: 16px;
+        font-weight: bold;
+        margin-top: 15px;
+    }
+
+    &__picker{
+        width: 150px;
+    }
+
+    &__add-input{
+    margin-top: 10px;
+    }
+
+    }
+
+

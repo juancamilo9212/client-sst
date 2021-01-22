@@ -68,7 +68,7 @@ export default function Accidents() {
             type='primary'
             style={{
             fontWeight:"bold",
-            width:"200px",
+            width:"300px",
             height:"50px",
             fontSize:"16px",
             background:"#00FFFF",
@@ -76,7 +76,7 @@ export default function Accidents() {
             }}
             onClick={() => openAddAccidentModal()}
             >
-            Crear accidente
+            Crear Accidente de Trabajo
             </Button>
 
             <Select

@@ -1,41 +1,96 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import './AddEditExtintorForm.scss';
 import {Form, Button, Input , 
     Select, DatePicker, Row, Col,
  notification}from 'antd';
 import moment from 'moment';
 import 'moment/locale/es';
+import {getUserId} from '../../../../api/auth';
+import {addExtintorApi,updateExtintorApi} from '../../../../api/extintors';
 
 
 export default function AddEditExtintorForm(props) {
     const {
         setReloadResource,
         setIsVisibleModal,
+        setOption,
         extintor} = props;
     const [extintorData, setExtintorData] = useState({});
-    console.log(extintorData);
+
+    useEffect(() => {
+      extintor ? setExtintorData(extintor):setExtintorData({})  
+    }, [extintor])
+    
+    const createExtintor = () => {
+        const userId=getUserId();
+        addExtintorApi(userId,extintorData).then(response => {
+            notification["success"]({
+                message:"El extintor fue creado exitosamente"
+            });
+            setReloadResource(true);
+            setIsVisibleModal(false);
+            setExtintorData({});
+            setOption("Extintor");
+        }).catch(err => {
+            notification["error"]({
+                message:err
+            })
+        })
+    }
+
+    const updateExtintor = () => {
+        const {_id} = extintor;
+        updateExtintorApi(_id,extintorData).then(response => {
+            notification["success"]({
+                message:"El extintor fue actualizado exitosamente"
+            });
+            setReloadResource(true);
+            setIsVisibleModal(false);
+            setExtintorData({});
+            setOption("Extintor");
+        }).catch(err => {
+            notification["error"]({
+                message:err
+            })
+        })
+    }
     
     return (
        <ExtintorForm
         extintorData={extintorData}
         setExtintorData={setExtintorData}
         extintor={extintor}
+        createExtintor={createExtintor}
+        updateExtintor={updateExtintor}
        /> 
     )
 }
 
 function ExtintorForm(props){
-const {extintorData,setExtintorData,extintor}=props;
+const {extintorData,
+    setExtintorData,
+    extintor,
+    createExtintor,
+    updateExtintor}=props;
 const {Item} = Form;
 const {Option} = Select;
 const dateFormat="MM/YYYY";
+const{
+serialNumber,
+kindOfAgent,
+loadDate,
+nextLoadDate,
+company,
+location
+}=extintorData;
+const formattedLoadDate=moment(loadDate);
+const formattedNextLoadDate=moment(nextLoadDate);
 
 return(
     <Form
     className="extintor-fom"
     layout="vertical"
-    //onSubmitCapture={accident ? updateAccident:createAccident}
-       
+    onSubmitCapture={extintor ? updateExtintor:createExtintor}
     >
         <Row
         className="extintor-form__row"
@@ -47,7 +102,7 @@ return(
             <Input
             className="extintor-form__row-input"
             placeholder='Ingrese el consecutivo'
-            value={extintorData.serialNumber}
+            value={serialNumber}
             onChange={e => setExtintorData({...extintorData,serialNumber:e.target.value})}
             ></Input>
             </Item>
@@ -60,7 +115,7 @@ return(
             <Select
             className="extintor-form__row-input"
             placeholder="Seleccione un agente"
-            value={extintorData.kindOfAgent}
+            value={kindOfAgent}
             onChange={e => setExtintorData({...extintorData,kindOfAgent:e})}
             >
             <Option value="PQS: Polvo químico seco">
@@ -82,14 +137,10 @@ return(
                     >
                         <DatePicker
                         allowClear={false}
-                        value={extintor?
-                            moment(moment(extintorData.loadDate),dateFormat)
-                            :
-                            ""
-                        }
+                        value={moment(formattedLoadDate,dateFormat)}
                         onChange={(e,value) => 
                         setExtintorData({...extintorData,
-                        loadDate:moment(value).format(dateFormat)
+                        loadDate:value
                         })
                         }
                         />
@@ -102,14 +153,10 @@ return(
                     >
                         <DatePicker
                         allowClear={false}
-                        value={extintor?
-                            moment(moment(extintorData.nextLoadDate),dateFormat)
-                            :
-                            ""
-                        }
+                        value={moment(formattedNextLoadDate,dateFormat)}
                         onChange={(e,value) => 
                         setExtintorData({...extintorData,
-                            nextLoadDate:moment(value).format(dateFormat)
+                            nextLoadDate:value
                         })
                         }
                         />
@@ -123,7 +170,7 @@ return(
             <Input
             className="extintor-form__row-input"
             placeholder='Ingrese la empresa'
-            value={extintorData.company}
+            value={company}
             onChange={e => setExtintorData({...extintorData,company:e.target.value})}
             ></Input>
             </Item>
@@ -136,7 +183,7 @@ return(
             <Input
             className="extintor-form__row-input"
             placeholder='Ingrese la ubicación'
-            value={extintorData.location}
+            value={location}
             onChange={e => setExtintorData({...extintorData,location:e.target.value})}
             ></Input>
             </Item>

@@ -1,0 +1,68 @@
+@import '../../../../scss/index.scss';
+.add-edit-form{
+
+        max-height: 350px;
+        overflow: auto;
+    .kitDerrame-form{
+
+        
+    
+        &__row-input{
+            width: 300px;
+        }
+
+        &__add{
+            margin-top: 20px;
+        }
+    
+        &__submit{
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 16px;
+            width: 100%;
+            height: 40px;
+        }
+    }
+
+    .old-components{
+        h3{
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .ant-input{
+            width: 300px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            margin-right: 20px;
+        }
+
+        .ant-picker{
+            width: 300px;
+            margin-top: 10px;
+        }
+    }
+
+    .new-components{
+
+        h3{
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .ant-input{
+            width: 300px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            margin-right: 20px;
+        }
+
+        .ant-picker{
+            width: 300px;
+            margin-top: 10px;
+        }
+        
+    }
+
+
+}

@@ -1,27 +1,27 @@
 import React from 'react';
-import {Space, Button,
-    notification,Modal} from 'antd';
+import './KitDerrameTable.scss';
 import 
     { EyeOutlined, 
     EditOutlined, 
     DeleteOutlined 
     } from '@ant-design/icons';
+import {Space, Button,
+    notification,Modal} from 'antd';
 import moment from 'moment';
 import 'moment/locale/es';
-import './ExtintorTable.scss';
-import {removeExtintorApi} from '../../../../api/extintors';
 import Table from '../../../Table';
+import {removeKitDerrameApi} from '../../../../api/kitDerrame';
 
+export default function KitDerrameTable(props) {
 
-export default function ExtintorTable(props) {
- 
-const{extintors,
-setReloadResource,
-openResourceModal,
-openInspectionsModal
-} = props;
-
-const columns =
+    const 
+    {kitsDerrame,
+    setReloadResource,
+    openResourceModal,
+    openInspectionsModal
+    } = props;
+    
+    const columns =
     [
        {
            title:'Empresa',
@@ -34,30 +34,10 @@ const columns =
            key:'consecutivo',
        },
        {
-           title:'Tipo de agente',
-           dataIndex:'agente',
-           key:'agente'
-       },
-       {
            title:'Ubicación',
            dataIndex:'ubicacion',
            key:'ubicacion'
        },
-       {
-           title:'Última recarga',
-           dataIndex:'fechaRecarga',
-           key:'fechaRecarga'
-       },
-       {
-           title:'Próxima recarga',
-           dataIndex:'fechaProx',
-           key:'fechaProx'
-       },
-       {
-           title:'¿Vencido?',
-           dataIndex:'vencido',
-           key:'vencido',
-           },
        {
            title: 'Acciones',
            key: 'acciones',
@@ -103,11 +83,17 @@ const columns =
        }
 ]
 
-const deleteExtintor = (text) => {
-    const accidentId = text.key;
-    removeExtintorApi(accidentId).then(response => {
+const viewInspections = (text) => {
+    const kitDerrameId = text.key;
+    let kitDerrame = getResource(kitDerrameId,kitsDerrame);
+    openInspectionsModal(kitDerrame,kitDerrameId,"kit de derrame");
+}
+
+const deleteKitDerrame = (text) => {
+    const kitDerrameId = text.key;
+    removeKitDerrameApi(kitDerrameId).then(response => {
         notification["success"]({
-            message:"El extintor fue eliminado correctamente"
+            message:"El Kit de derrame fue eliminado correctamente"
         });
         setReloadResource(true);
         }).catch(err => {
@@ -120,69 +106,52 @@ const deleteExtintor = (text) => {
 const handleDelete = (text) => {
     const {confirm} = Modal;
     confirm({
-    content: `¿Deseas eliminar el extintor ${text.consecutivo}?`,
+    content: `¿Deseas eliminar el kit de derrame ${text.consecutivo}?`,
     onOk() {
-            deleteExtintor(text)
+            deleteKitDerrame(text)
           }
     })
 }
 
 const handleEdit = (text) => {
-const extintorId = text.key;
-let extintor = getResource(extintorId,extintors)
-openResourceModal(extintor);
-}
-
-const viewInspections = (text) => {
-    const extintortId = text.key;
-    let extintor = getResource(extintortId,extintors)
-    openInspectionsModal(extintor,extintortId,"Extintor");
+    const kitDerrameId = text.key;
+    let kitDerrame = getResource(kitDerrameId,kitsDerrame);
+    openResourceModal(kitDerrame);
 }
 
 let dataSource =[];
-        
-extintors.map(extintor => {
+
+kitsDerrame.map(extintor => {
     const {
     _id,
     company,
-    serialNumber,
-    kindOfAgent,
     location,
-    loadDate,
-    nextLoadDate,
-    needReload
+    serialNumber
     } = extintor;
-
-    const vencido = needReload ? 'Si':'No';
 
     const item ={
         key:_id,
         empresa:company,
         consecutivo:serialNumber,
-        agente:kindOfAgent,
-        ubicacion:location,
-        fechaRecarga:moment(loadDate).format('MM/YYYY'),
-        fechaProx:moment(nextLoadDate).format('MM/YYYY'),
-        vencido:vencido
+        ubicacion:location
     }
     dataSource.push(item);
 })
 
-    return(
-        <Table 
+    return (
+        <Table
         dataSource={dataSource}
         columns={columns}
         />
-        )
-   }
-
-   
-function getResource(key,resourceObject){
-let resource;
-resourceObject.filter(item => {
-if(item._id === key){
-    resource = item;
+    )
 }
-})
-return resource;
+
+function getResource(key,resourceObject){
+    let resource;
+    resourceObject.filter(item => {
+    if(item._id === key){
+        resource = item;
+    }
+    })
+    return resource;
 }

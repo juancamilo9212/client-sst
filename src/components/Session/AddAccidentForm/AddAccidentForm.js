@@ -229,11 +229,7 @@ return(
                         <DatePicker
                         allowClear={false}
                         showTime
-                        value={accident?
-                            moment(moment(accidentData.eventDate),dateFormat)
-                            :
-                            ""
-                        }
+                        value={moment(moment(accidentData.eventDate),dateFormat)}
                         onChange={(e,value) => 
                         setAccidentData({...accidentData,
                         eventDate:value
@@ -250,11 +246,7 @@ return(
                         <DatePicker
                         allowClear={false}
                         showTime
-                        value={accident? 
-                            moment(moment(accidentData.arrivalDate),dateFormat)
-                            :
-                            ""
-                        }
+                        value={moment(moment(accidentData.arrivalDate),dateFormat)}
                         onChange={(e,value) => 
                         setAccidentData({...accidentData,
                         arrivalDate:value})}/>
@@ -411,12 +403,7 @@ return(
                         <DatePicker
                         allowClear={false}
                         showTime
-                        value={
-                            accident? 
-                            moment(moment(accidentData.researchDate),dateFormat)
-                            :
-                            ""
-                        }
+                        value={moment(moment(accidentData.researchDate),dateFormat)}
                         onChange={(e,value) => 
                         setAccidentData({...accidentData,
                         researchDate:value})}/>
@@ -431,12 +418,7 @@ return(
                         <DatePicker
                         allowClear={false}
                         showTime
-                        value={
-                            accident? 
-                            moment(moment(accidentData.actionExecutionDate),dateFormat)
-                            :
-                            ""
-                        }
+                        value={moment(moment(accidentData.actionExecutionDate),dateFormat)}
                         onChange={(e,value) => 
                         setAccidentData({...accidentData,
                         actionExecutionDate:value})}
