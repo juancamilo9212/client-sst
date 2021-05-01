@@ -6,6 +6,9 @@ import 'moment/locale/es';
 import {PlusOutlined,DeleteOutlined} from '@ant-design/icons';
 import {updateExtintorApi} from '../../../../api/extintors';
 import {updateKitDerrameApi} from '../../../../api/kitDerrame';
+import {updateBotiquinesApi} from '../../../../api/botiquines';
+import {updateCamillaApi} from '../../../../api/camilla';
+
 
 export default function InspectionsModal(props) {
     const 
@@ -22,9 +25,6 @@ export default function InspectionsModal(props) {
     const [newInspections, setNewInspections] = useState([]);
     const [oldInspections, setOldInspections] = useState([]);
     const [hasChanged, setHasChanged] = useState(false);
-    console.log(sortedInspection);
-
-   
     
     const updateResource = () => {
         const payload = getRequestData();
@@ -50,6 +50,32 @@ export default function InspectionsModal(props) {
                 updateKitDerrameApi(resourceId,requestData).then(response => {
                     notification["success"]({
                         message:"El kit fue actualizado exitosamente"
+                    });
+                    resetVariables();
+                }).catch(err => {
+                    notification["error"]({
+                        message:err
+                    })
+                });
+                break;
+
+                case "Botiquin":
+                updateBotiquinesApi(resourceId,requestData).then(response => {
+                    notification["success"]({
+                        message:"El botiquin fue actualizado exitosamente"
+                    });
+                    resetVariables();
+                }).catch(err => {
+                    notification["error"]({
+                        message:err
+                    })
+                });
+                break;
+
+                case "Camilla":
+                updateCamillaApi(resourceId,requestData).then(response => {
+                    notification["success"]({
+                        message:"La camilla fue actualizada exitosamente"
                     });
                     resetVariables();
                 }).catch(err => {

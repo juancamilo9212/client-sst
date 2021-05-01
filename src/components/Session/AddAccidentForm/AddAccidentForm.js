@@ -1,14 +1,30 @@
 import React,{useState,useEffect,useCallback} from 'react';
 import {useDropzone} from 'react-dropzone'
 import './AddAccidentForm.scss';
-import {Form, Button, Input , Switch, 
-    Select, DatePicker, Row, Col,
- notification}from 'antd';
-import {CheckOutlined, CloseOutlined, InboxOutlined, DeleteOutlined} from '@ant-design/icons';
+import {
+Form, 
+Button,
+Input , 
+Switch, 
+Select, 
+DatePicker, 
+Row, 
+Col,
+notification}from 'antd';
+import {
+CheckOutlined, 
+CloseOutlined, 
+InboxOutlined, 
+DeleteOutlined
+} from '@ant-design/icons';
 import moment from 'moment';
 import 'moment/locale/es';
-import {addAccidentApi,updateAccidentApi,
-    uploadEventFilesApi,deleteEventFilesApi} from '../../../api/accident';
+import 
+{addAccidentApi,
+updateAccidentApi,
+uploadEventFilesApi,
+deleteEventFilesApi
+} from '../../../api/accident';
 import {getUserId} from '../../../api/auth';
 
 export default function AddAccidentForm(props) {
@@ -18,92 +34,78 @@ export default function AddAccidentForm(props) {
     const [eventFiles, setEventFiles] = useState([]);
     const [actionPlanFiles, setActionPlanFiles] = useState([]);
 
-    const noColabData= 
-    !accidentData.name || !accidentData.lastName
-    || !accidentData.idNumber || !accidentData.company
-     ? 
-     true:false;
-
-    const noEventDate= 
-    !accidentData.eventDate || !accidentData.arrivalDate ?
-    true:false;
-
-    const noEventDescription=
-    !accidentData.description || !accidentData.bodyPartAffected ?
-    true:false;
+    console.log(eventFiles);
+    
+    
+    useEffect(() => {
+    if(accident){
+    const 
+    {images,
+    actionPlanImages
+    } = accident;
+    
+    setAccidentData(accident)
+    images.length !== 0 ? 
+    setEventFiles(images)
+    :
+    setEventFiles([]);
+    actionPlanImages.length !== 0 ?
+    setActionPlanFiles(actionPlanImages)
+    :
+    setActionPlanFiles([]);
+    }else{
+    setAccidentData({});
+    setEventFiles([]);
+    setActionPlanFiles([]);
+    }
+    }, [accident])
 
     const createAccident = () =>{
-        if(noEventDate || noColabData || noEventDescription){
-            notification['warning']({
-                message:"Hay información obligatoria sin diligenciar"
-            });
-        }else{
         const userId=getUserId()
         addAccidentApi(userId,accidentData).then(response => {
-            notification['success']({
-                message:"El accidente se creó correctamente"
-            });
-            setReloadAccidents(true);
-            setIsVisibleModal(false);
-            setAccidentData({});
-        }).catch(err => {
-            notification['error']({
-                message:err
-            });
-        })
-        }
-    }
-
-    const updateAccident = () => {
-        
-        if(noEventDate || noColabData || noEventDescription){
-            notification['warning']({
-                message:"Hay información obligatoria sin diligenciar"
-            });
-        }else{
-            const accidentId=accident._id;
-            updateAccidentApi(accidentId,accidentData).then(response => {
+            const {status} = response;
+            console.log(response);
+            
+            if(status === 200){
                 notification['success']({
-                    message:"El accidente se actualizó correctamente"
+                    message:"El accidente se creó correctamente"
                 });
                 setReloadAccidents(true);
                 setIsVisibleModal(false);
-                setEventFiles([]);
-                setActionPlanFiles([]);
-            }).catch(err => {
-                notification['error']({
-                    message:err
-                });
-            })
-    }
-    }
-
-        useEffect(() => {
-            if(accident){
-                setAccidentData(accident);
-                const {images,actionPlanImages}=accident;
-                actionPlanImages ? setActionPlanFiles(actionPlanImages):setActionPlanFiles([]);
-                images ? setEventFiles(images):setEventFiles([]);
+                setAccidentData({});
+            }else{
+            notification['error']({
+            message:"Error. Por favor verifica la infomación ingresada"
+            });
             }
-            
-        }, [accident])
-    
-
-    useEffect(() => {
-            setAccidentData({
-                ...accidentData,
-                images:eventFiles
-            })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [eventFiles])
-
-    useEffect(() => {
-        setAccidentData({
-            ...accidentData,
-            actionPlanImages:actionPlanFiles
         })
-// eslint-disable-next-line react-hooks/exhaustive-deps
-}, [actionPlanFiles])
+    }
+
+    const updateAccident = () => {
+            const payload = {
+            ...accidentData,
+            images:eventFiles,
+            actionPlanImages:actionPlanFiles
+            }
+            const accidentId=accident._id;
+            updateAccidentApi(accidentId,payload).then(response => {
+                const {status} = response;
+                if(status === 200){
+                    notification['success']({
+                        message:"El accidente se actualizó correctamente"
+                    });
+                    setReloadAccidents(true);
+                    setIsVisibleModal(false);
+                    setEventFiles([]);
+                    setActionPlanFiles([]);
+                    setAccidentData({});
+                }else{
+                    notification['error']({
+                    message:"Error. Por favor verifica la infomación ingresada"
+                });
+            }
+        });
+    }
     
     return (
         <AccidentForm
@@ -122,16 +124,45 @@ export default function AddAccidentForm(props) {
 
 function AccidentForm(props){
 
-    const {accidentData,setAccidentData,
-    createAccident,updateAccident,accident
-    ,eventFiles,setEventFiles,actionPlanFiles,
-    setActionPlanFiles}=props;
+    const {
+    accidentData,
+    setAccidentData,
+    createAccident,
+    updateAccident,
+    accident,
+    eventFiles,
+    setEventFiles,
+    actionPlanFiles,
+    setActionPlanFiles
+    }=props;
     const dateFormat='M-D-YYYY hh:mm:ss'
     const {Item} = Form;
     const {TextArea} = Input;
     const {Option} = Select;
+    const {
+    name,
+    lastName,
+    company,
+    idNumber,
+    area,
+    bodyPartAffected,
+    eventDate,
+    arrivalDate,
+    description,
+    witness,
+    witnessName,
+    witnessIdNumber,
+    additionalComments,
+    reporterName,
+    brigadeMember,
+    accidentType,
+    researched,
+    researchDate,
+    actionExecutionDate,
+    actionPlan,
+    state
+    }=accidentData;
     
-
 return(
     <Form 
         className="new-accident-form"
@@ -140,14 +171,15 @@ return(
         >
             <Row className="new-accident-form__row">
                 <Col span={8}>
-                    <Item 
+                    <Item
                     label="Nombre"
                     >
                         <Input
                         className="new-accident-form__row-input"
                         placeholder='Ingrese el nombre'
-                        value={accidentData.name}
-                        onChange={e => setAccidentData({...accidentData,name:e.target.value})}
+                        value={name}
+                        onChange={e => 
+                        setAccidentData({...accidentData,name:e.target.value})}
                         />
                     </Item>
                 </Col>
@@ -159,9 +191,9 @@ return(
                         <Input
                         className="new-accident-form__row-input"
                         placeholder='Ingrese el apellido'
-                        value={accidentData.lastName}
-                        onChange={e => setAccidentData({...accidentData,lastName:e.target.value})}
-                        
+                        value={lastName}
+                        onChange={e => 
+                        setAccidentData({...accidentData,lastName:e.target.value})}
                         />
                     </Item>
                 </Col>
@@ -173,23 +205,23 @@ return(
                         <Input
                         className="new-accident-form__row-input"
                         placeholder='Ingrese la CC'
-                        value={accidentData.idNumber}
-                        onChange={e => setAccidentData({...accidentData,idNumber:e.target.value})}
-                        
+                        value={idNumber}
+                        onChange={e => 
+                        setAccidentData({...accidentData,idNumber:e.target.value})}
                         />
                     </Item>
                 </Col>
 
                 <Col span={8}>
                     <Item 
-                    label="Empresa"
+                    label='Empresa'
                     >
                         <Input
                         className="new-accident-form__row-input"
                         placeholder='Ingrese la empresa'
-                        value={accidentData.company}
-                        onChange={e => setAccidentData({...accidentData,company:e.target.value})}
-                        
+                        value={company}
+                        onChange={e => 
+                        setAccidentData({...accidentData,company:e.target.value})}
                         />
                     </Item>
                 </Col>
@@ -201,9 +233,8 @@ return(
                         <Input
                         className="new-accident-form__row-input"
                         placeholder='Ingrese el área a la que pertenece'
-                        value={accidentData.area}
+                        value={area}
                         onChange={e => setAccidentData({...accidentData,area:e.target.value})}
-                        
                         />
                     </Item>
                 </Col>
@@ -215,9 +246,9 @@ return(
                         <Input
                         className="new-accident-form__row-input"
                         placeholder='Ingrese la PCA'
-                        value={accidentData.bodyPartAffected}
-                        onChange={e => setAccidentData({...accidentData,bodyPartAffected:e.target.value})}
-                        
+                        value={bodyPartAffected}
+                        onChange={e => 
+                        setAccidentData({...accidentData,bodyPartAffected:e.target.value})}
                         />
                     </Item>
                 </Col>
@@ -227,9 +258,13 @@ return(
                     label="Fecha y hora del accidente"
                     >
                         <DatePicker
+                        placeholder={'Ingrese la fecha'}
                         allowClear={false}
                         showTime
-                        value={moment(moment(accidentData.eventDate),dateFormat)}
+                        value={eventDate ? 
+                        moment(moment(eventDate),dateFormat)
+                        : null
+                        }
                         onChange={(e,value) => 
                         setAccidentData({...accidentData,
                         eventDate:value
@@ -244,9 +279,13 @@ return(
                     label="Fecha y hora de entrada"
                     >
                         <DatePicker
+                         placeholder={'Ingrese la fecha'}
                         allowClear={false}
                         showTime
-                        value={moment(moment(accidentData.arrivalDate),dateFormat)}
+                        value={arrivalDate ? 
+                        moment(moment(arrivalDate),dateFormat)
+                        :null
+                        }
                         onChange={(e,value) => 
                         setAccidentData({...accidentData,
                         arrivalDate:value})}/>
@@ -259,20 +298,9 @@ return(
                     >
                         <TextArea
                         placeholder='Describa el evento'
-                        value={accidentData.description}
-                        onChange={e => setAccidentData({...accidentData,description:e.target.value})}
-                        />
-                    </Item>
-                </Col>
-
-                <Col span={24}>
-                    <Item 
-                    label="Version del colaborador"
-                    >
-                        <TextArea
-                        placeholder='Describa el evento'
-                        value={accidentData.accidentVersion}
-                        onChange={e => setAccidentData({...accidentData,accidentVersion:e.target.value})}
+                        value={description}
+                        onChange={e => 
+                        setAccidentData({...accidentData,description:e.target.value})}
                         />
                     </Item>
                 </Col>
@@ -285,8 +313,9 @@ return(
                         checkedChildren={<CheckOutlined />}
                         unCheckedChildren={<CloseOutlined />}
                         style={{width:"80px"}}
-                        checked={accidentData.witness}
-                        onChange={e => setAccidentData({...accidentData,witness:e})}
+                        checked={witness}
+                        onChange={e => 
+                        setAccidentData({...accidentData,witness:e})}
                         />
                     </Item>
                 </Col>
@@ -298,8 +327,9 @@ return(
                         <Input
                         className="new-accident-form__row-input"
                         placeholder='Ingrese el nombre'
-                        value={accidentData.witnessName}
-                        onChange={e => setAccidentData({...accidentData,witnessName:e.target.value})}
+                        value={witnessName}
+                        onChange={e =>
+                        setAccidentData({...accidentData,witnessName:e.target.value})}
                         
                         />
                     </Item>
@@ -312,8 +342,9 @@ return(
                         <Input
                         className="new-accident-form__row-input"
                         placeholder='Ingrese la cédula'
-                        value={accidentData.witnessIdNumber}
-                        onChange={e => setAccidentData({...accidentData,witnessIdNumber:e.target.value})}
+                        value={witnessIdNumber}
+                        onChange={e => 
+                        setAccidentData({...accidentData,witnessIdNumber:e.target.value})}
                         />
                     </Item>
                 </Col>
@@ -324,8 +355,9 @@ return(
                     >
                         <TextArea
                         placeholder='Comentario adicional'
-                        value={accidentData.additionalComments}
-                        onChange={e => setAccidentData({...accidentData,additionalComments:e.target.value})}
+                        value={additionalComments}
+                        onChange={e => 
+                        setAccidentData({...accidentData,additionalComments:e.target.value})}
                         />
                     </Item>
                 </Col>
@@ -336,7 +368,7 @@ return(
                     >
                         <Input
                         className="new-accident-form__row-input"
-                        value={accidentData.reporterName}
+                        value={reporterName}
                         onChange={e => setAccidentData({...accidentData,reporterName:e.target.value})}
                         />
                     </Item>
@@ -349,9 +381,9 @@ return(
                         <Input
                         className="new-accident-form__row-input"
                         placeholder='Ingresa el nombre'
-                        value={accidentData.brigadeMember}
-                        onChange={e => setAccidentData({...accidentData,brigadeMember:e.target.value})}
-                        
+                        value={brigadeMember}
+                        onChange={e => 
+                        setAccidentData({...accidentData,brigadeMember:e.target.value})}
                         />
                     </Item>
                 </Col>
@@ -362,7 +394,7 @@ return(
                     >
                         <Select
                         defaultValue="Accidente de trabajo"
-                        value={accidentData.accidentType}
+                        value={accidentType}
                         onChange={e => setAccidentData({...accidentData,accidentType:e})}
                         >
                             <Option value="Accidente de trabajo">
@@ -389,9 +421,8 @@ return(
                         checkedChildren={<CheckOutlined />}
                         unCheckedChildren={<CloseOutlined />}
                         style={{width:"80px"}}
-                        checked={accidentData.researched}
+                        checked={researched}
                         onChange={e => setAccidentData({...accidentData,researched:e})}
-                        
                         />
                     </Item>
                 </Col>
@@ -401,9 +432,13 @@ return(
                     label="Fecha y hora de la investigación"
                     >
                         <DatePicker
+                        placeholder={'Ingrese la fecha'}
                         allowClear={false}
                         showTime
-                        value={moment(moment(accidentData.researchDate),dateFormat)}
+                        value={researchDate ? 
+                        moment(moment(accidentData.researchDate),dateFormat)
+                        :null
+                        }
                         onChange={(e,value) => 
                         setAccidentData({...accidentData,
                         researchDate:value})}/>
@@ -416,9 +451,13 @@ return(
                     label="Fecha plan de acción"
                     >
                         <DatePicker
+                        placeholder={'Ingrese la fecha'}
                         allowClear={false}
                         showTime
-                        value={moment(moment(accidentData.actionExecutionDate),dateFormat)}
+                        value={actionExecutionDate?
+                        moment(moment(actionExecutionDate),dateFormat)
+                        :null
+                        }
                         onChange={(e,value) => 
                         setAccidentData({...accidentData,
                         actionExecutionDate:value})}
@@ -434,7 +473,7 @@ return(
                         checkedChildren={<CheckOutlined />}
                         unCheckedChildren={<CloseOutlined />}
                         style={{width:"80px"}}
-                        checked={accidentData.state}
+                        checked={state}
                         onChange={e => setAccidentData({...accidentData,state:e})}
                         
                         />
@@ -447,8 +486,9 @@ return(
                     >
                         <TextArea
                         placeholder='Describa el plan de acción'
-                        value={accidentData.actionPlan}
-                        onChange={e => setAccidentData({...accidentData,actionPlan:e.target.value})}
+                        value={actionPlan}
+                        onChange={e => 
+                        setAccidentData({...accidentData,actionPlan:e.target.value})}
                         />
                     </Item>
                 </Col>
@@ -501,14 +541,19 @@ return(
 function DropZone(props){
     const {eventFiles,setEventFiles}=props;
     let storeAcceptedFiles = eventFiles ? eventFiles:[];
-
+    console.log(storeAcceptedFiles);
+    
     const onDropAccepted = useCallback(acceptedFiles => {
         uploadEventFilesApi(acceptedFiles).then(response => {
             const {images,code} = response;
             if(code === 200){
-                images.map(item => {
-                    storeAcceptedFiles.push(item);
-                })
+                if(images.length === 1){
+                    storeAcceptedFiles.push(images[0]);
+                }else{
+                    images.map(item => {
+                        storeAcceptedFiles.push(item);
+                    });
+                }
                 setEventFiles(storeAcceptedFiles);
             }
         });        
@@ -553,10 +598,10 @@ function AcceptedFiles(props){
             if(response.code === 200){
                 let newAcceptedFiles = acceptedFiles.filter((item,index) => {
                     return position !== index;
-                })
+                });
                 setEventFiles(newAcceptedFiles);
             }
-        })
+        });
         
 
     }

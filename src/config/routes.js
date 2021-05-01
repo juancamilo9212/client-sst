@@ -17,6 +17,11 @@ const routes = [
         exact:false,
         routes: [
             {
+                path:"/accidentes",
+                component:Accidents,
+                exact:true
+            },
+            {
                 path:"/leyes",
                 component:Laws,
                 exact:true
@@ -24,11 +29,6 @@ const routes = [
             {
                 path:"/inicio-sesion",
                 component:SignIn,
-                exact:true
-            },
-            {
-                path:"/accidentes",
-                component:Accidents,
                 exact:true
             },
             {

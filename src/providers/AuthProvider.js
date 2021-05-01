@@ -26,7 +26,6 @@ return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>
 
 function isUserLogged(setUser){
 const accessToken=getAccessTokenApi();
-console.log(accessToken);
 
 if(!accessToken){
     const refreshToken=getRefreshAccessTokenApi();

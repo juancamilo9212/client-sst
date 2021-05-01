@@ -1,5 +1,12 @@
 @import '../../../scss/index.scss';
 
+
+.ant-modal-title{
+    font-size: 24px;
+    font-weight: bold;
+    padding: 10px 200px;
+}
+
 .accident-view{
     height: 600px;
     overflow: auto;
@@ -20,6 +27,28 @@
 
     p{
         font-size: 18px;
+    }
+
+    &__export{
+        margin-top: 10px;
+        margin-bottom: 20px;
+        button{
+            //width: 60px;
+            height: 60px;
+            border-radius: 5px;
+            border: 2px solid $gray-color-light;
+            background-color: white;
+            svg{
+                color: $gray-color-dark;
+                width: 30px;
+                height: 30px;
+              }
+            &:hover{
+            svg{
+                color: white;
+              }
+            }
+        }
     }
 
     &__personal-info{

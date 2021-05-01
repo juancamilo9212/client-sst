@@ -1,41 +1,66 @@
 import React from 'react';
 import moment from 'moment';
 import 'moment/locale/es';
-import {CheckCircleOutlined, 
-    FolderOpenOutlined,
-    DownloadOutlined,
-    InboxOutlined
+import {
+CheckCircleOutlined, 
+FolderOpenOutlined,
+DownloadOutlined,
+InboxOutlined,
+FilePdfOutlined
 } from '@ant-design/icons';
 import './AccidentView.scss';
-import { Button } from 'antd';
-import {getEventFilesApi} from '../../../api/accident';
+import { Button, notification } from 'antd';
+import 
+{
+getEventFilesApi,
+getAccidentReportApi
+} from '../../../api/accident';
 
 export default function AccidentView(props) {
     const {accident} =props;
-    const{   
-        images,
-        name,
-        lastName,
-        idNumber,
-        company,
-        area,
-        bodyPartAffected,
-        accidentType,
-        description,
-        accidentVersion,
-        additionalComments,
-        reporterName,
-        witness,
-        brigadeMember,
-        state,
-        researched,
-        eventDate,
-        arrivalDate
+    const{
+    _id,   
+    images,
+    name,
+    lastName,
+    idNumber,
+    company,
+    area,
+    bodyPartAffected,
+    accidentType,
+    description,
+    additionalComments,
+    reporterName,
+    witness,
+    brigadeMember,
+    state,
+    researched,
+    eventDate,
+    arrivalDate
     } = accident;
     const dateFormat = 'MMMM D YYYY, h:mm a';
     const eventDateFormat=moment(eventDate).format(dateFormat);
     const arrivalDateFormat=moment(arrivalDate).format('h:mm a');
 
+    const getReport = () => {
+        const now = moment().format();
+        getAccidentReportApi(_id).then(response => {
+            const blob = new Blob([response], {type: 'application/pdf'})
+            const url = window.URL.createObjectURL(new Blob([blob]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `${now}`);
+            // 3. Append to html page
+            document.body.appendChild(link);
+            // 4. Force download
+            link.click();
+            // 5. Clean up and remove the link
+            link.parentNode.removeChild(link);
+        });
+        
+    }
+ 
+    
     const downloadFile = (fileName) => {
         getEventFilesApi(fileName)
         .then((response) => response.blob())
@@ -53,8 +78,19 @@ export default function AccidentView(props) {
         });
     }
     return (
-        <div className="accident-view">
-
+        <div 
+        className="accident-view"
+        id="accident-view"
+        >
+            <div className="accident-view__export">
+            <Button
+            htmlType="primary"
+            type='primary'
+            onClick={getReport} 
+            >
+            <FilePdfOutlined/>
+            </Button>
+            </div>
             <div className="accident-view__personal-info">
             <h2>Información Personal</h2>
             <h3><b>Nombre:</b>{` ${name} ${lastName}`}</h3>
@@ -74,8 +110,6 @@ export default function AccidentView(props) {
             <div className="accident-view__event-description">
             <h2>Descripción del evento</h2>
             <p>{description}</p>
-            <h2>Versión del colaborador</h2>
-            <p>{accidentVersion}</p>
             <h2>Archivos del accidente</h2>
             {
             images ?

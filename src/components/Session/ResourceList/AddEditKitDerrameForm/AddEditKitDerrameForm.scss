@@ -41,6 +41,22 @@
             width: 300px;
             margin-top: 10px;
         }
+
+        .ant-btn{
+            background-color: white;
+            border:1px solid white;
+            margin-left: 50px;
+            &:hover{
+                background-color: $background-color-error;
+                border: 1px solid rgba($color: #000000, $alpha: 0.25);
+                svg{
+                    color: rgba($color: #000000, $alpha: 0.75);  
+                }
+            }
+            svg{
+                color: rgba($color: #000000, $alpha: 0.25);
+            }
+        }
     }
 
     .new-components{
@@ -60,6 +76,22 @@
         .ant-picker{
             width: 300px;
             margin-top: 10px;
+        }
+
+        .ant-btn{
+            background-color: white;
+            border:1px solid white;
+            margin-left: 50px;
+            &:hover{
+                background-color: $background-color-error;
+                border: 1px solid rgba($color: #000000, $alpha: 0.25);
+                svg{
+                    color: rgba($color: #000000, $alpha: 0.75);  
+                }
+            }
+            svg{
+                color: rgba($color: #000000, $alpha: 0.25);
+            }
         }
         
     }

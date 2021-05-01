@@ -7,6 +7,12 @@
 
     &__modal{
 
+        h1{
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
         
             .ant-modal-header{
                 background-color: $primary-color-blue;

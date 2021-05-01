@@ -22,7 +22,7 @@ export async function addAccidentApi(userId,accidentData){
     }
 
     return await fetch(url,params).then(response => {
-        return response.json();
+        return response;
     }).then(result => {
         return result;
     }).catch(err => {
@@ -41,7 +41,7 @@ export  async function updateAccidentApi(accidentId,accidentData){
     }
 
     return await fetch(url,params).then(response => {
-        return response.json();
+        return response;
     }).then(result => {
         return result;
     }).catch(err => {
@@ -116,6 +116,23 @@ export async function getEventFilesApi(eventFileName){
     console.log(response);
     
     return response;
+    }).then(result => {
+        return result;
+    }).catch(err => {
+        return err;
+    })
+}
+
+export async function getAccidentReportApi(accidentId){
+    const url = `${BASE_URL}/${API_VERSION}/accident-report/${accidentId}`;
+    const params = {
+        method:'GET',
+        headers:{
+            "Content-Type":"application/json"
+        }
+    }
+    return await fetch(url,params).then(response => {
+    return response.json();
     }).then(result => {
         return result;
     }).catch(err => {

@@ -3,6 +3,8 @@ import './ResourceList.scss';
 import {Button,notification} from 'antd';
 import ExtintorTable from './ExtintorTable/index';
 import KitDerrameTable from './KitDerrameTable/index';
+import BotiquinTable from './BotiquinTable';
+import CamillaTable from './CamillaTable';
 
 export default function ResourceList(props) {
 
@@ -60,8 +62,28 @@ switch (option) {
             openInspectionsModal={openInspectionsModal}
             />
         )
+    case "Botiquin":
+        return(
+            <BotiquinTable
+            botiquines={tableData}
+            setReloadResource={setReloadResource}
+            openResourceModal={openResourceModal}
+            openInspectionsModal={openInspectionsModal}
+            />
+        )
+
+        case "Camilla":
+            return(
+                <CamillaTable
+                camillas={tableData}
+                setReloadResource={setReloadResource}
+                openResourceModal={openResourceModal}
+                openInspectionsModal={openInspectionsModal}
+                />
+            )
+
     default:
-        break;
+    break;
 }
 }
 

@@ -122,7 +122,15 @@ const handleDelete = (text) => {
     confirm({
     content: `¿Deseas eliminar el extintor ${text.consecutivo}?`,
     onOk() {
-            deleteExtintor(text)
+            removeExtintorApi(text).then(response => {
+                notification["success"]({
+                    message:"El extintor ha sido eliminado correctamente"
+                }).catch(err => {
+                    notification["error"]({
+                        message:err
+                    });
+                });
+            });
           }
     })
 }

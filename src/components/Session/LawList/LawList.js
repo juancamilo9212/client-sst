@@ -23,21 +23,21 @@ export default function LawList(props) {
 
     return (
         <div className="law-list">
-            <Row justify="space-between">
-            {laws.map(law => {
-                return(
-                <Col 
-                key={law.idContenido}
-                md={8}
-                className="law-list__cards"
-                >
-                <LawCard 
-                law={law}
-                verMasButton={verMasButton}
-                />
-                </Col>
-                )
-            })}
+        <Row justify="space-between">  
+        {laws.map(law => {
+            return(
+            <Col 
+            key={law.idContenido}
+            md={8}
+            className="law-list__cards"
+            >
+            <LawCard 
+            law={law}
+            verMasButton={verMasButton}
+            />
+            </Col>
+            )
+        })};
         </Row> 
         <Modal
         setIsVisible={setIsVisibleModal}
@@ -47,6 +47,19 @@ export default function LawList(props) {
         >
         {modalContent}
         </Modal> 
+        </div>
+    )
+}
+
+function LawComponent(props) {
+    const 
+    {laws,
+    verMasButton
+    } = props;
+
+    return (
+        <div>
+            
         </div>
     )
 }

@@ -7,7 +7,6 @@ import SignIn from '../pages/Session/SignIn/SignIn';
 import {getAccessTokenApi, getRefreshAccessTokenApi} from '../api/auth';
 import useAuth from '../hooks/useAuth'
 import './LayOutBasic.scss';
-import Laws from '../pages/Session/Laws';
 
 export default function LayOutBasic(props) {
 

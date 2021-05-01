@@ -15,12 +15,19 @@ export default function Laws() {
     const [lawsPerPage, setLawsPerPage] = useState([]);
     const [page, setPage] = useState(1);
     const pageSize=9;
+
+    console.log(lawsPerPage);
+    
     
     useEffect(() => {
     let paginatedLaws=[];
+    if(laws.length !== undefined){
     const bias=page-1;
     paginatedLaws=laws.slice(bias * pageSize, page * pageSize);
     setLawsPerPage(paginatedLaws);
+    }else{
+    setLawsPerPage([]);
+    }
     }, [page,laws])
 
 
@@ -33,7 +40,7 @@ export default function Laws() {
         }).catch(err => {
             notification["error"]({
                 message:"No se ha podido encontrar la información solicitada"
-            })
+            });
         })
     }, [category])
     
@@ -54,10 +61,27 @@ export default function Laws() {
             fontWeight:"bold"
             }}
             spinning={isLoading}
-            />
-            <LawList 
-            laws={lawsPerPage}
-            />
+            /> 
+            {
+                laws.length !== undefined ?
+                <LawList 
+                laws={lawsPerPage}
+                />
+                :
+                <h1
+                style={
+                {
+                color:"white",
+                fontSize:"18px",
+                marginTop:"100px",
+                marginBottom:"200px",
+                marginLeft:"350px"
+                }
+                }
+                >La información no está disponible en este momento
+                </h1>
+            }
+            
             <Pagination
             size={lawSize}
             pageSize={pageSize}

@@ -8,6 +8,10 @@ import Modal from '../../components/Modal';
 import AddEditExtintorForm from '../../components/Session/ResourceList/AddEditExtintorForm';
 import InspectionsModal from '../../components/Session/ResourceList/InspectionsModal/';
 import AddEditKitDerrameForm from '../../components/Session/ResourceList/AddEditKitDerrameForm';
+import AddEditBotiquinForm from '../../components/Session/ResourceList/AddEditBotiquinForm';
+import {getBotiquinesApi} from '../../api/botiquines';
+import {getCamillasApi} from '../../api/camilla';
+import AddEditCamillaForm from '../../components/Session/ResourceList/AddEditCamillaForm';
 
 
 export default function Resources() {
@@ -30,8 +34,8 @@ export default function Resources() {
                 }).catch(err =>{
                     notification["error"]({
                         message:"No se ha podido encontrar la información solicitada"
-                    })
-                })
+                    });
+                });
             break;
             
             case "Kit Derrame":
@@ -42,11 +46,35 @@ export default function Resources() {
                 }).catch(err =>{
                     notification["error"]({
                         message:"No se ha podido encontrar la información solicitada"
-                    })
-                })
+                    });
+                });
+            break;
+
+            case "Botiquin":
+                getBotiquinesApi(userId).then(response => {
+                    const {botiquines} = response;
+                    setTableData(botiquines);
+                    setReloadResource(false);
+                }).catch(err =>{
+                    notification["error"]({
+                        message:"No se ha podido encontrar la información solicitada"
+                    });
+                });
+            break;
+
+            case "Camilla":
+                getCamillasApi(userId).then(response => {
+                    const {camillas} = response;
+                    setTableData(camillas);
+                    setReloadResource(false);
+                }).catch(err =>{
+                    notification["error"]({
+                        message:"No se ha podido encontrar la información solicitada"
+                    });
+                });
             break;
             default:
-                break;
+            break;
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [reloadResource])
@@ -86,6 +114,40 @@ export default function Resources() {
            kitDerrame={resource}
            />
             )
+            break;
+                
+            case "Botiquin":
+                setIsVisibleModal(true)
+                resource ?
+                setModalTitle("Actualizando un botiquin")
+                :
+                setModalTitle("Creando un nuevo botiquin")
+    
+                setModalContent(
+                <AddEditBotiquinForm
+                setReloadResource={setReloadResource}
+                setIsVisibleModal={setIsVisibleModal}
+                setOption={setOption}
+                botiquin={resource}
+                />
+                )
+            break;
+
+            case "Camilla":
+                setIsVisibleModal(true)
+                resource ?
+                setModalTitle("Actualizando una camilla")
+                :
+                setModalTitle("Creando una camilla")
+    
+                setModalContent(
+                <AddEditCamillaForm
+                setReloadResource={setReloadResource}
+                setIsVisibleModal={setIsVisibleModal}
+                setOption={setOption}
+                camilla={resource}
+                />
+                )
             break;
         
             default:

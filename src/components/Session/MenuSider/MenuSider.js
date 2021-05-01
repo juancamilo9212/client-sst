@@ -38,7 +38,6 @@ const TooltiplStyle = createGlobalStyle`
             defaultSelectedKeys={["/sesion/leyes"]}
             inlineIndent={70}
             >
-
                 <Item 
                 key="/leyes"
                 className="menu-sider__item"
@@ -83,6 +82,7 @@ const TooltiplStyle = createGlobalStyle`
                 </Link>
                 </Tooltip>
                 </Item>
+
                 
             </Menu>
             </Sider>

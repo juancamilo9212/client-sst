@@ -21,6 +21,7 @@ export default function Accidents() {
      const userId =getUserId();
      
      
+     
      useEffect(() => {
          getAccidentsApi(userId,filter,filterValue).then(response => {
             setAccidents(response.accidents);
@@ -31,6 +32,7 @@ export default function Accidents() {
      }, [reloadAccidents,filterValue])
 
      const openAddAccidentModal = (accident) => {
+
         setIsVisibleModal(true);
         accident ?
         setModalTitle("Actualizando un accidente")
@@ -41,7 +43,6 @@ export default function Accidents() {
                 setReloadAccidents={setReloadAccidents}
                 setIsVisibleModal={setIsVisibleModal}
                 accident={accident}
-                accidents={accidents}
                 />
         )
      }

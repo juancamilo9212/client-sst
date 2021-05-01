@@ -2,15 +2,23 @@ import React from 'react';
 import './AccidentList.scss';
 import {Table, Tag, Space, Button,
      notification,Modal} from 'antd';
-import { EyeOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { 
+EyeOutlined, 
+EditOutlined, 
+DeleteOutlined
+} from '@ant-design/icons';
 import {deleteAccidentApi} from '../../../api/accident';
 import moment from 'moment';
 import 'moment/locale/es';
 
 export default function AccidentList(props) {
 
-    const {accidents,openAddAccidentModal,
-        setReloadAccidents,openViewAccidentModal} = props;
+    const {
+    accidents,
+    openAddAccidentModal,
+    setReloadAccidents,
+    openViewAccidentModal
+    } = props;
     
     return (
         <div className="accident-list">
@@ -29,20 +37,18 @@ export default function AccidentList(props) {
 function Accidents(props){
 
 let color;
-const {accidents,openAddAccidentModal,
-    setReloadAccidents,openViewAccidentModal} = props;
+const {
+accidents,
+openAddAccidentModal,
+setReloadAccidents,
+openViewAccidentModal
+} = props;
 const {confirm}=Modal;
 
-const pickAccident = (text) => {
-    let accidentToWork=accidents.filter(item => {
-        return item._id === text.key
-    });
-    return accidentToWork;
-}
-
 const handleEdit = (text) =>{
-    let accidentToWork=pickAccident(text);
-    openAddAccidentModal(accidentToWork[0]);
+    const accidentId=text.key;
+    let accidentToWork=getAccident(accidentId,accidents);
+    openAddAccidentModal(accidentToWork);
 }
 
 const deleteAccident = (text) => {
@@ -71,8 +77,9 @@ return(
 }
 
 const handleView = (text) => {
-    let accidentToWork=pickAccident(text);
-    openViewAccidentModal(accidentToWork[0]);
+    const accidentId=text.key;
+    let accidentToWork=getAccident(accidentId,accidents);
+    openViewAccidentModal(accidentToWork);
 }
 
     const columns =
@@ -188,3 +195,12 @@ const handleView = (text) => {
         )
 }
 
+function getAccident(key,resourceObject){
+    let resource;
+    resourceObject.filter(item => {
+    if(item._id === key){
+        resource = item;
+    }
+    })
+    return resource;
+}

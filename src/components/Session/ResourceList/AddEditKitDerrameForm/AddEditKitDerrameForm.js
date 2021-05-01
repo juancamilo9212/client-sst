@@ -17,7 +17,10 @@ import moment from 'moment';
 import 'moment/locale/es';
 import {getUserId} from '../../../../api/auth';
 import './AddEditKitDerrameForm.scss';
-import {PlusOutlined} from '@ant-design/icons';
+import {
+PlusOutlined,
+DeleteOutlined
+} from '@ant-design/icons';
 import 
 {
 addKitDerrameApi,
@@ -35,9 +38,9 @@ export default function AddEditKitDerrameForm(props) {
     const [kitDerrameData, setKitDerrameData] = useState({});
     const [newComponents, setNewComponents] = useState([]);
     const [oldComponents,setOldComponents]=useState([]);
+    const [oldKits, setOldKits] = useState(0);
     const [inputs, setInputs] = useState(0);
-    console.log(newComponents);
-    
+   
     
     const getNewComponents = (numberOfComponents) => {
     const newEmptyKit={
@@ -147,6 +150,19 @@ export default function AddEditKitDerrameForm(props) {
     setNewComponents(array);
     }
 
+    const handleDelete = (
+    array,index,type
+    ) => {
+        array.splice(index,1);
+        if(type === "Old"){
+            setOldComponents(array);
+            setOldKits(array.length);
+        }else{
+            setNewComponents(array);
+            setInputs(inputs-1);
+        }
+    }
+
     return (
         <div
         className="add-edit-form"
@@ -162,6 +178,7 @@ export default function AddEditKitDerrameForm(props) {
         handleChange={handleChange}
         handleAddInput={handleAddInput}
         components={oldComponents}
+        handleDelete={handleDelete}
         />
         </div>  
     )
@@ -178,7 +195,8 @@ getNewComponents,
 handleChange,
 handleAddInput,
 components,
-kitDerrame
+kitDerrame,
+handleDelete
 }=props;
 
 const {Item} = Form;
@@ -239,6 +257,7 @@ onSubmitCapture={
             components?
             <OldComponents
             components={components}
+            handleDelete={handleDelete}
             className="kitDerrame-form__components"
             />
            :null
@@ -253,6 +272,7 @@ onSubmitCapture={
             getNewComponents={getNewComponents}
             newComponents={inputs}
             handleChange={handleChange}
+            handleDelete={handleDelete}
             />
             :
             null
@@ -285,7 +305,10 @@ onSubmitCapture={
 }
 
 function OldComponents(props){
-const {components} = props;
+const {
+components,
+handleDelete
+} = props;
 const dateFormat= 'DD/MM/YYYY';
 return (
 <div>
@@ -297,7 +320,17 @@ components.map((item,index) => {
         <div
         className="old-components"
         >
-        <h3>{`Componente ${index+1}`}</h3>
+        <h3>
+        {`Componente ${index+1} `}
+        <Button
+        type="danger"
+        onClick={
+        () => handleDelete(components,index,"Old")
+        }
+        >
+        <DeleteOutlined/>
+        </Button>
+        </h3>
         <Input
         value={component}
         />
@@ -322,7 +355,8 @@ function NewComponents(props){
 const {
 newComponents,
 getNewComponents,
-handleChange
+handleChange,
+handleDelete
 }=props;
 
 const newComponentsAux=getNewComponents(newComponents);
@@ -334,7 +368,17 @@ return(
                     <div
                     className="new-components"
                     >
-                    <h3>{`Nuevo component ${index+1}`}</h3>
+                    <h3>
+                    {`Nuevo component ${index+1}`}
+                    <Button
+                    type="danger"
+                    onClick={
+                    () => handleDelete(newComponentsAux,index,"New")
+                    }
+                    >
+                    <DeleteOutlined/>
+                    </Button>
+                    </h3>
                     <Input
                     onChange={e =>
                     handleChange(
