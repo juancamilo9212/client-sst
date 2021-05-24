@@ -110,7 +110,7 @@ export default function SignUpForm() {
         >
             
             <Input
-            placeholder="Nombre"
+            placeholder="Nombre(s)"
             prefix={<UserOutlined />}
             name="name"
             className="sign-up-form__input"
@@ -118,7 +118,7 @@ export default function SignUpForm() {
             />
            
             <Input
-            placeholder="Apellido"
+            placeholder="Apellido(s)"
             prefix={<UserOutlined />}
             name="lastName"
             className="sign-up-form__input"
