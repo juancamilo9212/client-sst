@@ -17,18 +17,20 @@ export default function LoginForm() {
         if(!userData.email || !userData.password){
             notification["warning"]({
                 message: "Todos los campos son obligatorios"
-            })
+            });
         }else{
             await signInApi(userData).then(response => {
-            const {accessToken, refreshAccessToken} =response
-            localStorage.setItem(ACCESS_TOKEN, accessToken);
-            localStorage.setItem(REFRESH_TOKEN, refreshAccessToken);
-            window.location.href= "/leyes"
-            }).catch(err => {
-                notification["error"]({
-                    message: err
-                })
-            })
+                const {accessToken, refreshAccessToken} =response
+                    if(accessToken){
+                    localStorage.setItem(ACCESS_TOKEN, accessToken);
+                    localStorage.setItem(REFRESH_TOKEN, refreshAccessToken);
+                    window.location.href= "/leyes" 
+                    }else{
+                        notification["error"]({
+                        message: response.message
+                    });
+                    }
+                });
         }
     }
 
@@ -61,7 +63,6 @@ export default function LoginForm() {
             >
             Entrar
             </Button>
-
         </Form>
     )
 }
