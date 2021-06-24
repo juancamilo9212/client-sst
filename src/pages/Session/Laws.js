@@ -2,7 +2,7 @@ import React,{useState, useEffect} from 'react';
 import MenuLaw from '../../components/Session/MenuLaw';
 import LawList from '../../components/Session/LawList';
 import {getLawApi} from '../../api/arl';
-import {notification,Spin}from 'antd';
+import {notification,Spin,Input}from 'antd';
 import Pagination from '../../components/Pagination';
 
 export default function Laws() {
@@ -14,9 +14,22 @@ export default function Laws() {
     const [lawSize, setLawSize] = useState(0);
     const [lawsPerPage, setLawsPerPage] = useState([]);
     const [page, setPage] = useState(1);
+    const {Search} = Input;
     const pageSize=9;
 
-    console.log(lawsPerPage);
+    const filterLaws = (value) => {
+        let lawRequested
+        if(value !== ""){
+            lawRequested  = laws.filter(law => {
+                const {titulo} = law;
+                return titulo.toLowerCase().indexOf(value.toLowerCase()) !== -1
+             });
+        setLaws(lawRequested);
+        setLawSize(lawRequested.length);
+         }else{
+        setReloadLaws(true);
+        }   
+        };
     
     
     useEffect(() => {
@@ -42,7 +55,7 @@ export default function Laws() {
                 message:"No se ha podido encontrar la información solicitada"
             });
         })
-    }, [category])
+    }, [category,reloadLaws])
     
     return (
         <div>
@@ -50,6 +63,20 @@ export default function Laws() {
             setCategory={setCategory}
             setIsLoading={setIsLoading}
             setLaws={setLaws}
+            />
+            <Search
+            placeholder="Ingrese el nombre de la norma"
+            id="lawFilter"
+            onSearch={filterLaws}
+            allowClear
+            enterButton="Buscar"
+            style={{
+            width:"500px",
+            marginTop:"20px",
+            marginBottom:"10px"
+            }}
+            bordered
+            size="large"
             />
             <Spin 
             tip="Cargando..."
@@ -82,13 +109,14 @@ export default function Laws() {
                 </h1>
             }
             
-            <Pagination
-            size={lawSize}
-            pageSize={pageSize}
-            setPage={setPage}
-            laws={laws}
-            page={page}
-            />
+                <Pagination
+                size={lawSize}
+                pageSize={pageSize}
+                setPage={setPage}
+                laws={laws}
+                page={page}
+                /> 
+            
         </div>
     )
 }

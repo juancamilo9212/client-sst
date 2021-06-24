@@ -51,7 +51,7 @@ export default function LawList(props) {
     )
 }
 
-function LawComponent(props) {
+/*function LawComponent(props) {
     const 
     {laws,
     verMasButton
@@ -62,7 +62,7 @@ function LawComponent(props) {
             
         </div>
     )
-}
+}*/
 
 function LawCard(props){
     const {law,verMasButton} = props;

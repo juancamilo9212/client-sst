@@ -18,6 +18,7 @@ export default function Accidents() {
      const [filterValue, setFilterValue] = useState("");
      const [accidentsCount, setAccidentsCount] = useState("");
      const {Option}=Select;
+     const {Search} = Input;
      const userId =getUserId();
      
      
@@ -62,6 +63,10 @@ export default function Accidents() {
         setFilter("");
     }
 
+    const onSearch = (value) => {
+        setFilterValue(value);
+    }
+
     return (
         <div className="accidents">
             <div className="accidents__add-btn">
@@ -95,16 +100,17 @@ export default function Accidents() {
             </Select>
             {
                 filter ?
-            <Input
+            <Search
             allowClear
-            onPressEnter={e => setFilterValue(e.target.value)}
-            style={
-            {
-            width:"200px",
+            onSearch={onSearch}
+            enterButton="Buscar"
+            style={{
+            width:"300px",
             marginLeft:"20px",
-            fontWeight:"bold"
-            }
-            }
+            marginTop:"10px"
+            }}
+            bordered
+            size="middle"
             />:
             null
         }
@@ -113,11 +119,11 @@ export default function Accidents() {
             type="danger"
             onClick={clearAll}
             style={
-                {
-                marginLeft:"20px",
-                fontWeight:"bold"
-                }
-                }
+            {
+            marginLeft:"20px",
+            fontWeight:"bold"
+            }
+            }
             >
             Limpiar
             </Button>:
