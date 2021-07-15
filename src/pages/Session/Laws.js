@@ -24,7 +24,7 @@ export default function Laws() {
                 const {titulo} = law;
                 return titulo.toLowerCase().indexOf(value.toLowerCase()) !== -1
              });
-        setLaws(lawRequested);
+        setLawsPerPage(lawRequested);
         setLawSize(lawRequested.length);
          }else{
         setReloadLaws(true);
