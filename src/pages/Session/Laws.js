@@ -1,80 +1,65 @@
 import React,{useState, useEffect} from 'react';
 import MenuLaw from '../../components/Session/MenuLaw';
 import LawList from '../../components/Session/LawList';
-import {getLawApi} from '../../api/arl';
 import {notification,Spin,Input}from 'antd';
 import Pagination from '../../components/Pagination';
 import {useSelector,useDispatch} from 'react-redux';
-import {getLaws} from '../../redux/actions/lawsActions';
+import {fetchLaws, getLaws} from '../../redux/actions/lawsActions';
 
 export default function Laws() {
 
-    const [reloadLaws, setReloadLaws] = useState(true);
-    const [category, setCategory] = useState("5");
-    const [laws, setLaws] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+    //const [reloadLaws, setReloadLaws] = useState(false);
     const [lawSize, setLawSize] = useState(0);
     const [lawsPerPage, setLawsPerPage] = useState([]);
     const [page, setPage] = useState(1);
     const {Search} = Input;
     const pageSize=9;
-    const reduxLaws = useSelector((state) => state.arlLaws.laws);
+    const {laws,isLoading,category} = useSelector((state) => state.arlLaws);
     const dispatch = useDispatch();
-    
-    const getLawsFromArlAPI = () => {
-        getLawApi(category).then(response => {
-            dispatch(getLaws(response));
-        }).catch(err => {
-            notification["error"]({
-                message:"No se ha podido encontrar la información solicitada"
-            });
-        })
-    }
-    
+    const resultsNotAvailable = laws.length === undefined || laws.length === 0;
+    const informationIsNotLoading = isLoading === false;
+
+    useEffect(() => {
+        dispatch(fetchLaws(category));
+    }, [category,dispatch])
+
+    const filterLawsByTitle = (value) => {
+        return laws.filter(law => {
+            const {titulo} = law;
+            return titulo.toLowerCase().indexOf(value.toLowerCase()) !== -1
+         });
+    } 
 
     const filterLaws = (value) => {
-        const laws = reduxLaws;
-        let lawRequested
-        if(value !== ""){
-            lawRequested  = laws.filter(law => {
-                const {titulo} = law;
-                return titulo.toLowerCase().indexOf(value.toLowerCase()) !== -1
-             });
-        setLawsPerPage(lawRequested);
-        setLawSize(lawRequested.length);
+        const searchBarIsNotEmpty = value !== "";
+        if(searchBarIsNotEmpty){
+        const lawRequested = filterLawsByTitle(value);
+        const resultsFound = lawRequested.length > 0;
+        resultsFound ? setLawsPerPage(lawRequested):dispatch(getLaws([]));
+        setLawSize(lawRequested.length)
          }else{
-        setReloadLaws(true);
+        dispatch(fetchLaws(category));
         }   
         };
     
     
     useEffect(() => {
-    let paginatedLaws=[];
-    const laws = reduxLaws;
-    if(laws.length !== undefined){
+    if(!resultsNotAvailable){
     const bias=page-1;
-    paginatedLaws=laws.slice(bias * pageSize, page * pageSize);
+    const paginatedLaws=laws.slice(bias * pageSize, page * pageSize);
     setLawsPerPage(paginatedLaws);
-    setLawSize(reduxLaws.length);
+    setLawSize(laws.length);
     }else{
     setLawsPerPage([]);
     }
-    }, [page,reduxLaws])
-
-
-    useEffect(() => {
-        getLawsFromArlAPI();
-        setIsLoading(false);
-        setReloadLaws(false);
-    }, [category,reloadLaws])
+    }, [page, laws, resultsNotAvailable])
 
     return (
         <div>
-            <MenuLaw
-            setCategory={setCategory}
-            setIsLoading={setIsLoading}
-            setLaws={setLaws}
-            />
+            <div>
+            <MenuLaw/>
+            </div>
+            <div>
             <Search
             placeholder="Ingrese el nombre de la norma"
             id="lawFilter"
@@ -89,44 +74,62 @@ export default function Laws() {
             bordered
             size="large"
             />
+            </div>
+            
+            <div>
             <Spin 
             tip="Cargando..."
             size="large"
-            style={{color:"#FFF",
-            marginLeft:"600px",
-            marginTop:"300px",
+            style={{
+            color:"#FFF",
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            margin: "-25px 0 0 -25px",
             fontSize:"16px",
             fontWeight:"bold"
             }}
             spinning={isLoading}
             /> 
             {
-                laws.length !== undefined ?
-                <LawList 
-                laws={lawsPerPage}
-                />
-                :
+                resultsNotAvailable && informationIsNotLoading
+                ?
                 <h1
                 style={
                 {
                 color:"white",
                 fontSize:"18px",
-                marginTop:"100px",
-                marginBottom:"200px",
-                marginLeft:"350px"
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                margin: "-25px 0 0 -25px",  
                 }
                 }
-                >La información no está disponible en este momento
-                </h1>
+                >No se encontró ningún resultado
+                </h1>:
+                <LawList 
+                laws={lawsPerPage}
+                />
+                
+                
             }
+            </div>
             
+            <div>
+            {
+                resultsNotAvailable?
+                null
+                :
                 <Pagination
                 size={lawSize}
                 pageSize={pageSize}
                 setPage={setPage}
                 laws={laws}
                 page={page}
-                /> 
+            /> 
+            }
+            </div>
+                
             
         </div>
     )

@@ -1,16 +1,16 @@
 import React from 'react';
 import './MenuLaw.scss';
 import {Menu} from 'antd';
+import {setCategory} from '../../../redux/actions/lawsActions';
+import {useDispatch} from 'react-redux';
 
 export default function MenuLaw(props) {
 
-    const {setCategory,setIsLoading,setLaws}=props;
     const {Item}=Menu;
+    const dispatch = useDispatch();
 
     const actionsOnClick = (category) =>{
-        setCategory(category);
-        setIsLoading(true);
-        setLaws([]);
+        dispatch(setCategory(category));
     }
 
     return (
