@@ -4,6 +4,8 @@ import LawList from '../../components/Session/LawList';
 import {getLawApi} from '../../api/arl';
 import {notification,Spin,Input}from 'antd';
 import Pagination from '../../components/Pagination';
+import {useSelector,useDispatch} from 'react-redux';
+import {getLaws} from '../../redux/actions/lawsActions';
 
 export default function Laws() {
 
@@ -16,8 +18,22 @@ export default function Laws() {
     const [page, setPage] = useState(1);
     const {Search} = Input;
     const pageSize=9;
+    const reduxLaws = useSelector((state) => state.arlLaws.laws);
+    const dispatch = useDispatch();
+    
+    const getLawsFromArlAPI = () => {
+        getLawApi(category).then(response => {
+            dispatch(getLaws(response));
+        }).catch(err => {
+            notification["error"]({
+                message:"No se ha podido encontrar la información solicitada"
+            });
+        })
+    }
+    
 
     const filterLaws = (value) => {
+        const laws = reduxLaws;
         let lawRequested
         if(value !== ""){
             lawRequested  = laws.filter(law => {
@@ -34,29 +50,24 @@ export default function Laws() {
     
     useEffect(() => {
     let paginatedLaws=[];
+    const laws = reduxLaws;
     if(laws.length !== undefined){
     const bias=page-1;
     paginatedLaws=laws.slice(bias * pageSize, page * pageSize);
     setLawsPerPage(paginatedLaws);
+    setLawSize(reduxLaws.length);
     }else{
     setLawsPerPage([]);
     }
-    }, [page,laws])
+    }, [page,reduxLaws])
 
 
     useEffect(() => {
-        getLawApi(category).then(response => {
-            setIsLoading(false);
-            setLaws(response);
-            setReloadLaws(false);
-            setLawSize(response.length);
-        }).catch(err => {
-            notification["error"]({
-                message:"No se ha podido encontrar la información solicitada"
-            });
-        })
+        getLawsFromArlAPI();
+        setIsLoading(false);
+        setReloadLaws(false);
     }, [category,reloadLaws])
-    
+
     return (
         <div>
             <MenuLaw
