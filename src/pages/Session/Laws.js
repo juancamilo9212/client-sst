@@ -1,14 +1,13 @@
 import React,{useState, useEffect} from 'react';
 import MenuLaw from '../../components/Session/MenuLaw';
 import LawList from '../../components/Session/LawList';
-import {notification,Spin,Input}from 'antd';
+import {Spin,Input}from 'antd';
 import Pagination from '../../components/Pagination';
 import {useSelector,useDispatch} from 'react-redux';
 import {fetchLaws, getLaws} from '../../redux/actions/lawsActions';
 
 export default function Laws() {
 
-    //const [reloadLaws, setReloadLaws] = useState(false);
     const [lawSize, setLawSize] = useState(0);
     const [lawsPerPage, setLawsPerPage] = useState([]);
     const [page, setPage] = useState(1);
