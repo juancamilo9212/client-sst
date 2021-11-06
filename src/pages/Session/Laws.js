@@ -46,7 +46,7 @@ export default function Laws() {
         }   
         };
 
-        const setNumberOfPagesDependingOnResults = (results) => {
+        const setResultsDependingOnPageSelected = (results) => {
             const bias=page-1;
             const paginatedLaws = results.slice(bias * pageSize, page * pageSize);
             setLawsInThePage(paginatedLaws);
@@ -59,9 +59,9 @@ export default function Laws() {
         setLawsInThePage([])
     }else{
         isListFiltered ?
-        setNumberOfPagesDependingOnResults(lawsWhenFilterApplied)
+        setResultsDependingOnPageSelected(lawsWhenFilterApplied)
         :
-        setNumberOfPagesDependingOnResults(laws);
+        setResultsDependingOnPageSelected(laws);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [page,lawsWhenFilterApplied,laws])
