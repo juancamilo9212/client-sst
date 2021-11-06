@@ -24,27 +24,17 @@ export default function Laws() {
         dispatch(fetchLaws(category));
     }, [category,dispatch])
 
-    const filterLawsByTitle = (value) => {
-        return laws.filter(law => {
-            const {titulo} = law;
-            return titulo.toLowerCase().indexOf(value.toLowerCase()) !== -1
-         });
-    } 
-
-    const filterLaws = (value) => {
-        const searchBarIsNotEmpty = value !== "";
-        if(searchBarIsNotEmpty){
-        const lawRequested = filterLawsByTitle(value);
-        const resultsFound = lawRequested.length > 0;
-        if(resultsFound){
-            setLawsWhenFilterApplied(lawRequested);
-            setIsListFiltered(true);
+    useEffect(() => {
+        if(resultsNotAvailable){
+            setLawsInThePage([])
+        }else{
+            isListFiltered ?
+            setResultsDependingOnPageSelected(lawsWhenFilterApplied)
+            :
+            setResultsDependingOnPageSelected(laws);
         }
-         }else{
-        dispatch(fetchLaws(category));
-        setIsListFiltered(false);
-        }   
-        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, [page,lawsWhenFilterApplied,laws])
 
         const setResultsDependingOnPageSelected = (results) => {
             const bias=page-1;
@@ -52,19 +42,29 @@ export default function Laws() {
             setLawsInThePage(paginatedLaws);
             setLawSize(results.length);
         }
-    
-    
-    useEffect(() => {
-    if(resultsNotAvailable){
-        setLawsInThePage([])
-    }else{
-        isListFiltered ?
-        setResultsDependingOnPageSelected(lawsWhenFilterApplied)
-        :
-        setResultsDependingOnPageSelected(laws);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [page,lawsWhenFilterApplied,laws])
+
+        const filterLaws = (value) => {
+            const searchBarIsNotEmpty = value !== "";
+            if(searchBarIsNotEmpty){
+            const lawRequested = filterLawsByTitle(value);
+            const resultsFound = lawRequested.length > 0;
+            if(resultsFound){
+                setLawsWhenFilterApplied(lawRequested);
+                setIsListFiltered(true);
+            }
+             }else{
+            dispatch(fetchLaws(category));
+            setIsListFiltered(false);
+            }   
+            };
+
+        const filterLawsByTitle = (value) => {
+        return laws.filter(law => {
+            const {titulo} = law;
+            return titulo.toLowerCase().indexOf(value.toLowerCase()) !== -1
+         });
+        } 
+
 
     return (
         <div>
