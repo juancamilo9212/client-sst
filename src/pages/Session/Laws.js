@@ -4,12 +4,14 @@ import LawList from '../../components/Session/LawList';
 import {Spin,Input}from 'antd';
 import Pagination from '../../components/Pagination';
 import {useSelector,useDispatch} from 'react-redux';
-import {fetchLaws, getLaws} from '../../redux/actions/lawsActions';
+import {fetchLaws} from '../../redux/actions/lawsActions';
 
 export default function Laws() {
 
     const [lawSize, setLawSize] = useState(0);
-    const [lawsPerPage, setLawsPerPage] = useState([]);
+    const [lawsInThePage, setLawsInThePage] = useState([]);
+    const [lawsWhenFilterApplied, setLawsWhenFilterApplied] = useState([]);
+    const [isListFiltered, setIsListFiltered] = useState(false);
     const [page, setPage] = useState(1);
     const {Search} = Input;
     const pageSize=9;
@@ -34,24 +36,35 @@ export default function Laws() {
         if(searchBarIsNotEmpty){
         const lawRequested = filterLawsByTitle(value);
         const resultsFound = lawRequested.length > 0;
-        resultsFound ? setLawsPerPage(lawRequested):dispatch(getLaws([]));
-        setLawSize(lawRequested.length)
+        if(resultsFound){
+            setLawsWhenFilterApplied(lawRequested);
+            setIsListFiltered(true);
+        }
          }else{
         dispatch(fetchLaws(category));
+        setIsListFiltered(false);
         }   
         };
+
+        const setNumberOfPagesDependingOnResults = (results) => {
+            const bias=page-1;
+            const paginatedLaws = results.slice(bias * pageSize, page * pageSize);
+            setLawsInThePage(paginatedLaws);
+            setLawSize(results.length);
+        }
     
     
     useEffect(() => {
-    if(!resultsNotAvailable){
-    const bias=page-1;
-    const paginatedLaws=laws.slice(bias * pageSize, page * pageSize);
-    setLawsPerPage(paginatedLaws);
-    setLawSize(laws.length);
+    if(resultsNotAvailable){
+        setLawsInThePage([])
     }else{
-    setLawsPerPage([]);
+        isListFiltered ?
+        setNumberOfPagesDependingOnResults(lawsWhenFilterApplied)
+        :
+        setNumberOfPagesDependingOnResults(laws);
     }
-    }, [page, laws, resultsNotAvailable])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [page,lawsWhenFilterApplied,laws])
 
     return (
         <div>
@@ -107,10 +120,8 @@ export default function Laws() {
                 >No se encontró ningún resultado
                 </h1>:
                 <LawList 
-                laws={lawsPerPage}
+                laws={lawsInThePage}
                 />
-                
-                
             }
             </div>
             

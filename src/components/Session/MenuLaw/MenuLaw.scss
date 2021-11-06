@@ -1,7 +1,6 @@
 @import '../../../scss/index.scss';
 
 .menu-leyes{
-
     
     position: sticky;
     top:0;
@@ -16,18 +15,13 @@
         border-radius: 8px;
 
         span{
-            font-size: 18px;
+            font-size: 22px;
             color: $font-light;
             padding: 15px;
-            font-weight: bold;
             border-radius: 8px;
             
             &:hover{
-                background-color: $gray-color-light;
-                
-            }
-            &:active{
-                background-color: $gray-color-light;
+                font-weight: bold;
             }
         }
     }
