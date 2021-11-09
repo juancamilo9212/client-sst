@@ -51,7 +51,7 @@ export default function LawList(props) {
     )
 }
 
-function LawCard(props){
+export function LawCard(props){
     const {law,verMasButton} = props;
     const {Meta}=Card;
     return(

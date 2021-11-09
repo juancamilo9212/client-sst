@@ -4,7 +4,7 @@ import {Menu} from 'antd';
 import {setCategory} from '../../../redux/actions/lawsActions';
 import {useDispatch} from 'react-redux';
 
-export default function MenuLaw(props) {
+export default function MenuLaw() {
 
     const {Item}=Menu;
     const dispatch = useDispatch();
